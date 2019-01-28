@@ -9,35 +9,20 @@
                   aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="#" >Item</a>
-              </li> <li class="nav-item">
-                <a class="nav-link" href="#" >Item</a>
+              <li class="nav-item" v-show="loginStatus1">
+                <router-link class="nav-link" :to="{name: 'user'}">User</router-link>
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                  Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+              <li class="nav-item" v-for="item in category.category__categories" :key="item.id">
+                <a class="nav-link" href="#" >{{item.name}}</a>
               </li>
             </ul>
-            <div class="form-inline my-2 my-lg-0" v-show="!loginStatus">
+            <div class="form-inline my-2 my-lg-0" v-show="!loginStatus1">
               <router-link class="btn btn-danger mr-2" :to="{name: 'login'}">Login</router-link>
               <router-link class="btn btn-info" :to="{name: 'register'}">Register</router-link>
             </div>
-            <div v-show="loginStatus">
+            <div v-show="loginStatus1">
               <button class="btn btn-danger" @click="logout">Logout</button>
             </div>
           </div>
@@ -52,14 +37,28 @@ import Vue from 'vue'
 export default Vue.component('c-header', {
   data: function () {
     return {
-      token : localStorage.getItem('token')
+      token: null,
+      category: []
     }
   },
-  mounted() {
+
+  mounted () {
+    this.$store.dispatch('getCategory')
+      .then(res => {
+        this.category = this.$store.getters.getCategory
+      })
+    this.token = localStorage.getItem('token')
   },
   computed: {
-    loginStatus: function() {
+    loginStatus1: function () {
       return this.$store.getters.loginStatus
+    },
+    getCategory: function () {
+      return this.category
+    },
+    getToken: function () {
+      console.log(localStorage.getItem('token')?true:false)
+      return localStorage.getItem('token')?true:false
     }
   },
   methods: {
@@ -72,14 +71,10 @@ export default Vue.component('c-header', {
     register: function () {
       this.$router.push({name: 'register'})
     },
-    getToken: function () {
-      console.log('mounted token')
-      this.token = localStorage.getItem('token')
-    },
     logout: function () {
-      if(localStorage.getItem('token')){
+      if (localStorage.getItem('token')) {
         localStorage.removeItem('token')
-        this.$store.dispatch('setLoginStatus',false)
+        this.$store.dispatch('setLoginStatus', false)
       }
     }
   },

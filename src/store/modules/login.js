@@ -13,7 +13,7 @@ const getters = {
 }
 
 const actions = {
-  getToken ({commit}, params) {
+  getToken: function ({commit}, params) {
     return new Promise(function (resolve, reject) {
       let urlData = 'login'
       http.axiosCus.post(urlData, params, {
@@ -30,22 +30,27 @@ const actions = {
           resolve()
         }, response => {
           reject(response)
-          console.log(response, 'err')
+          // console.log(response, 'err')
         })
     })
   },
-  postRegister ({commit}, data) {
-    http.axiosCus
-      .post('register', data)
-      .then(r => r.data)
-      .then(status => commit(types.POST_REGISTER, status))
-      .catch(err => console.log(err.response.data.error, 'error'))
+  postRegister: function ({commit}, data) {
+    return new Promise(function (resolve, reject) {
+      http.axiosCus
+        .post('register', data)
+        .then(res => {
+          commit(types.POST_REGISTER, res.data)
+          resolve()
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
   }
 }
 
 const mutations = {
   [types.GET_TOKEN] (state, data) {
-    // console.log(types.GET_TOKEN, 'cvcvcv')
     state.getToken = data
   },
   [types.POST_REGISTER] (state, data) {

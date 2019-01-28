@@ -7,7 +7,7 @@
       <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>
         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-               placeholder="Enter email" v-model="dataLogin.email">
+               placeholder="Enter email" v-model="dataLogin.username">
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
       </div>
       <div class="form-group">
@@ -18,10 +18,10 @@
       <div class="form-group form-check">
         <input type="checkbox" class="form-check-input" id="exampleCheck1">
         <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        <p class="text-danger" v-if="error">Login fail</p>
       </div>
       <button type="submit" class="btn btn-primary" @click="login">Submit</button>
       <button class="btn btn-primary" @click="reset">Reset</button>
-      <p>{{ data }}</p>
     </div>
   </div>
 </template>
@@ -32,11 +32,12 @@ export default {
   data: function () {
     return {
       dataLogin: {
-        email: '',
+        username: '',
         password: ''
       },
       showSearchBox: true,
-      token: 'no data'
+      token: 'no data',
+      error: false
     }
   },
   computed: {
@@ -47,21 +48,26 @@ export default {
     }
   },
   mounted: function () {
-    console.log(this.data, 'mmm')
+    // console.log(this.data, 'mmm')
   },
   methods: {
     login: function () {
-      if (this.dataLogin.email === '' && this.dataLogin.password === '') {
+      if (this.dataLogin.username === '' && this.dataLogin.password === '') {
       } else {
         this.$store.dispatch('getToken', this.dataLogin)
           .then(() => {
-            console.log(this.data)
-            this.$router.push({name: 'home'})
+            // console.log(this.data)
+            if (this.data.success) {
+              this.$router.push({name: 'home'})
+            } else {
+              this.error = true
+            }
           })
       }
     },
     reset: function () {
-      this.dataLogin.email = this.dataLogin.password = ''
+      this.dataLogin.username = this.dataLogin.password = ''
+      this.error = false
     },
     search: function () {
       this.showSearchBox = !this.showSearchBox

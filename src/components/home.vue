@@ -14,7 +14,7 @@ export default {
       this.$router.push({name: 'login'})
     },
     registerPage: function () {
-    this.$router.push({name: 'register'})
+      this.$router.push({name: 'register'})
     }
   }
 }

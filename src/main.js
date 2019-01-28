@@ -6,9 +6,15 @@ import router from './router'
 import './assets/style/main.scss'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import store from './store'
-// import './mixins/common.js'
+import FullCalendar from 'vue-full-calendar'
+
+// import 'fullcalendar-scheduler'
+// import 'fullcalendar/dist/fullcalendar.min.css'
+import 'fullcalendar/dist/fullcalendar.min.css'
 
 Vue.config.productionTip = false
+// import './mixins/common.js'
+Vue.use(FullCalendar)
 
 /* eslint-disable no-new */
 new Vue({
