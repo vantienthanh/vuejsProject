@@ -22,14 +22,15 @@ export default {
     this.id = (this.$route.params.id)
     this.$store.dispatch('getUserInfo', this.id)
       .then(() => {
+        console.log(this.dataRes)
         this.formData.username = this.dataRes.username
         this.formData.fullName = this.dataRes.fullName
-      })
+      }).catch(() => console.log('err'))
   },
   computed: {
     dataRes: {
       get: function () {
-        return this.$store.getters.userInfo
+        return this.$store.getters.userInfo.data
       }
     }
   },
@@ -39,7 +40,7 @@ export default {
         id: this.id,
         formData: this.formData
       }
-      this.$store.dispatch('updateUser', params).then(() =>{
+      this.$store.dispatch('updateUser', params).then(() => {
         this.$router.push({name: 'user'})
       })
     }

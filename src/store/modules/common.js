@@ -1,6 +1,4 @@
 import * as types from '../mutation-types'
-// import Constant from '../../utils/const.js'
-// import router from '../../router'
 import http from '../../utils/http.js'
 const state = {
   isShowBtn: true,

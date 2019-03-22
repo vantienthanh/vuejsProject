@@ -1,4 +1,4 @@
-<!--suppress ALL -->
+
 <template>
   <div>
     <div class="row">
@@ -13,6 +13,8 @@
             <ul class="navbar-nav mr-auto">
               <li class="nav-item" v-show="loginStatus1">
                 <router-link class="nav-link" :to="{name: 'user'}">User</router-link>
+              </li><li class="nav-item" v-show="loginStatus1">
+                <router-link class="nav-link" :to="{name: 'calendar'}">Calendar</router-link>
               </li>
               <li class="nav-item" v-for="item in category.category__categories" :key="item.id">
                 <a class="nav-link" href="#" >{{item.name}}</a>
@@ -44,7 +46,7 @@ export default Vue.component('c-header', {
 
   mounted () {
     this.$store.dispatch('getCategory')
-      .then(res => {
+      .then(() => {
         this.category = this.$store.getters.getCategory
       })
     this.token = localStorage.getItem('token')
@@ -57,8 +59,8 @@ export default Vue.component('c-header', {
       return this.category
     },
     getToken: function () {
-      console.log(localStorage.getItem('token')?true:false)
-      return localStorage.getItem('token')?true:false
+      // console.log(localStorage.getItem('token') ? true:false)
+      return !!localStorage.getItem('token')
     }
   },
   methods: {
@@ -76,11 +78,6 @@ export default Vue.component('c-header', {
         localStorage.removeItem('token')
         this.$store.dispatch('setLoginStatus', false)
       }
-    }
-  },
-  watch: {
-    token: function () {
-
     }
   }
 })

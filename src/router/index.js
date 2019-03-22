@@ -6,6 +6,7 @@ import Register from '@/components/Register'
 import userIndex from '../components/backend/user/userIndex'
 import userDetail from '../components/backend/user/userDetail'
 import Calendar from '../components/calendar'
+import NProgress from 'nprogress'
 
 Vue.use(Router)
 

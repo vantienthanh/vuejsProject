@@ -31,8 +31,6 @@ export default {
         defaultView: 'month',
         eventRender: function (event, element) {
           console.log(event)
-          console.log(event.start._d)
-          console.log(event.end._d)
         }
       }
     }
